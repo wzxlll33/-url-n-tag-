@@ -1,13 +1,17 @@
-项目通过DrissionPage执行自动化操作，自动化获取指定网页的前n条笔记的标题，tag，点赞量，评论量，收藏量。
-url加密是通过两次url编码实现的，在这里并没有做自动化处理，后续有可能更新对应功能
+# 小红书笔记信息自动化获取脚本
 
-需求：
-python环境 3.9及以上
-DrissionPage
-bs4
+## 环境要求
+- Python 3.9及以上
+- DrissionPage
+- BeautifulSoup (bs4)
 
+## 使用方法
 
-使用方法：
-在项目代码同目录下简历名为xhs_urls.txt的文件
-在文件中写入需要的urls，一行放置一个url，自动按行读取
-安装好需要的包后直接执行代码，自动识别相应的搜索内容并获取相应的内容
+1. 在项目代码同目录下创建名为`xhs_urls.txt`的文件。
+2. 在`xhs_urls.txt`文件中写入需要抓取的URLs，每行一个URL。
+3. 安装所需的包后直接执行代码。
+
+## 安装依赖
+
+```bash
+pip install drissionpage beautifulsoup4
