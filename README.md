@@ -15,6 +15,8 @@
 
 ```bash
 pip install drissionpage beautifulsoup4
-
+```
 
 ## 2024/11/18更新：
+- 增加了爬取正文内容以及爬取发布时间的功能
+- 对于一些易报错的操作进行了try except保护 增强项目鲁棒性
