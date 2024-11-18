@@ -2,6 +2,7 @@ from DrissionPage import ChromiumPage
 from bs4 import BeautifulSoup
 import time
 import csv
+from url_process import generate_urls
 
 
 time_lst = []
@@ -12,6 +13,8 @@ count_likes = []
 count_stars = []
 count_comments = []
 
+# 调用函数，处理文件
+generate_urls('input.txt', 'xhs_urls.txt')
 
 def read_file_to_list(filename):
         with open(filename, 'r', encoding='utf-8') as file:
@@ -31,7 +34,7 @@ def get_data(url):
     for j in range(1,11):
         # 判断有无多出来的一栏 通过信息正确点入单个视频
             #                /html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]
-        if (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,0.3) != None) or (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,0.3) != None):
+        if (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None) or (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None):
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[4]/section[{j}]/div/div/a/span',1,1)
         else:               
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/section[{j}]/div/div/a/span',1,1)
@@ -71,7 +74,6 @@ def get_data(url):
         # 将页面倒回上一层 保证下一次点击正常进行
         page.back(1)
 
-        # 保证爬取的笔记数量为10个
     if flag == 1:
          # 判断有无多出来的一栏 通过信息正确点入单个视频
         if page.s_ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]') != None:
@@ -172,6 +174,13 @@ def __main__():
         # 遍历列表并写入数据
         for i in range(len(name_lst)):
             writer.writerow([name_lst[i],content_lst[i], count_likes[i], count_stars[i], count_comments[i], time_lst[i], tag_lst[i]])
+            # writer.writerow([name_lst[i]])
+            # writer.writerow([content_lst[i]])
+            # writer.writerow([count_likes[i]])
+            # writer.writerow([count_stars[i]])
+            # writer.writerow([count_comments[i]])
+            # writer.writerow([time_lst[i]])
+            # writer.writerow([tag_lst[i]])
 
     print(f'数据已写入 {filename}')
 
