@@ -4,6 +4,8 @@ import time
 import csv
 
 
+time_lst = []
+content_lst = []
 tag_lst = []
 name_lst = []
 count_likes = []
@@ -29,7 +31,7 @@ def get_data(url):
     for j in range(1,11):
         # 判断有无多出来的一栏 通过信息正确点入单个视频
             #                /html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]
-        if page.s_ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]') != None:
+        if (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None) or (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None):
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[4]/section[{j}]/div/div/a/span',1,1)
         else:               
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/section[{j}]/div/div/a/span',1,1)
@@ -56,6 +58,12 @@ def get_data(url):
 
         # 调用get_tag方法获取所有tag
         get_tag(soup)
+
+        # 调用get_content方法获取正文
+        get_content()
+
+        # 调用get_time方法获取发布时间
+        get_time()
         
         # 将flag重设 保证下一次爬取正常运行
         flag = 0
@@ -65,7 +73,7 @@ def get_data(url):
 
     if flag == 1:
          # 判断有无多出来的一栏 通过信息正确点入单个视频
-        if page.s_ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div[2]/button[1]') != None:
+        if page.s_ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]') != None:
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[4]/section[11]/div/div/a/span',1,1)
         else:               
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/section[11]/div/div/a/span',1,1)
@@ -86,6 +94,12 @@ def get_data(url):
 
         # 调用get_tag方法获取所有tag
         get_tag(soup)
+
+        # 调用get_content方法获取正文
+        get_content()
+
+        # 调用get_time方法获取发布时间
+        get_time()
         
 
     # print(count_likes)
@@ -126,6 +140,19 @@ def get_tag(soup):
     tag_lst.append(lst_temp)
     
 
+def get_content():
+    try:
+        ele_content = page.s_ele('xpath:/html/body/div[5]/div[1]/div[4]/div[2]/div[1]/div[2]/span/span[1]')
+        content_lst.append(ele_content.text)    
+    except:
+        content_lst.append('None')
+
+
+def get_time():
+    ele_time = page.s_ele('xpath:/html/body/div[5]/div[1]/div[4]/div[2]/div[1]/div[3]/span[1]')
+    time_lst.append(ele_time.text)
+
+
 def __main__():
     for i in range(len(urls)):
         print(f'正在爬取{urls[i]}')
@@ -137,13 +164,20 @@ def __main__():
     with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
         # 创建一个csv的写入器
         writer = csv.writer(csvfile)
-        
+        #标题,内容摘要,点赞量,收藏量,评论量,发布时间,标签
         # 写入标题行（可选）
-        writer.writerow(['Tag', 'Name', 'Likes', 'Stars', 'Comments'])
-        
+        writer.writerow(['Name', 'content', 'likes', 'stars', 'comments', 'time', 'tag'])
+        print(len(content_lst))
         # 遍历列表并写入数据
         for i in range(len(name_lst)):
-            writer.writerow([tag_lst[i], name_lst[i], count_likes[i], count_stars[i], count_comments[i]])
+            writer.writerow([name_lst[i],content_lst[i], count_likes[i], count_stars[i], count_comments[i], time_lst[i], tag_lst[i]])
+            # writer.writerow([name_lst[i]])
+            # writer.writerow([content_lst[i]])
+            # writer.writerow([count_likes[i]])
+            # writer.writerow([count_stars[i]])
+            # writer.writerow([count_comments[i]])
+            # writer.writerow([time_lst[i]])
+            # writer.writerow([tag_lst[i]])
 
     print(f'数据已写入 {filename}')
 
