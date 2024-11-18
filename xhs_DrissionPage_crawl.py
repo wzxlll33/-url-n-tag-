@@ -31,7 +31,7 @@ def get_data(url):
     for j in range(1,11):
         # 判断有无多出来的一栏 通过信息正确点入单个视频
             #                /html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]
-        if (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None) or (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,1) != None):
+        if (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,0.3) != None) or (page.ele('xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/div/div/div/button[1]',1,0.3) != None):
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[4]/section[{j}]/div/div/a/span',1,1)
         else:               
             ele = page.ele(f'xpath:/html/body/div[1]/div[1]/div[2]/div[2]/div/div[3]/section[{j}]/div/div/a/span',1,1)
